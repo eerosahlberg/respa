@@ -12,11 +12,11 @@ export default function EventTable({ data }: { data: any }) {
 						{Object.keys(data[0])
 							.sort()
 							.map((key: string) => {
-								//if key is "kuittaus" then return nothing, otherwise return the key
+								//if key is "kuitattu", "id" or "kuittaaja" then return nothing, otherwise return the key
 								if (key === 'kuitattu' || key === 'id' || key === 'kuittaaja') {
 									return;
 								} else {
-									return <Th>{key}</Th>;
+									return <Th key={key}>{key}</Th>;
 								}
 							})}
 						<Th>Kuitattu</Th>
@@ -32,14 +32,17 @@ export default function EventTable({ data }: { data: any }) {
 										if (key === 'kuitattu' || key === 'id' || key === 'kuittaaja') {
 											return;
 										} else {
-											return <Td>{event[key]}</Td>;
+											return <Td key={event.id + key}>{event[key]}</Td>;
 										}
 									})}
 								<Td>
 									{event.kuitattu ? (
-										<GrCheckboxSelected title={'Kuitannut: ' + event.kuittaaja} />
+										<GrCheckboxSelected
+											key={event.id + 'kuitattu'}
+											title={'Kuitannut: ' + event.kuittaaja}
+										/>
 									) : (
-										<GrCheckbox />
+										<GrCheckbox key={event.id + 'kuitattu'} />
 									)}
 								</Td>
 							</Tr>
