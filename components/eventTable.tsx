@@ -25,7 +25,7 @@ export default function EventTable({ data }: { data: any }) {
 				<Tbody>
 					{data.map((event: any) => {
 						return (
-							<Tr>
+							<Tr key={event.id + '-tablerow'}>
 								{Object.keys(event)
 									.sort()
 									.map((key) => {
@@ -35,7 +35,7 @@ export default function EventTable({ data }: { data: any }) {
 											return <Td key={event.id + key}>{event[key]}</Td>;
 										}
 									})}
-								<Td>
+								<Td key={event.id + '-kuitattu-column'}>
 									{event.kuitattu ? (
 										<GrCheckboxSelected
 											key={event.id + 'kuitattu'}
