@@ -18,7 +18,7 @@ import { Button, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import AllEvents from '../../components/allEventsTable';
 
-export default function events(props: any) {
+export default function Events(props: any) {
 	const [userData, setUserData] = useState<any>();
 	const [loading, setLoading] = useState<boolean>(true);
 
