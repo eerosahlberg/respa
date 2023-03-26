@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Button, Heading, Input, Select, useToast } from '@chakra-ui/react';
 
-export default function data(props: any) {
+export default function AddEvent(props: any) {
 	const [type, setType] = useState<string>('');
 
 	const [eventData, setEventData] = useState<any>([]);

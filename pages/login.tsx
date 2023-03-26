@@ -1,7 +1,7 @@
 import { Button, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
-export default function login(props: any) {
+export default function Login(props: any) {
 	const router = useRouter();
 	const redirect: any = router?.query?.redirect;
 

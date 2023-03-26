@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../../firebase/conf';
 import ApproveCard from '../../components/approveEventCard';
 
-export default function approve(props: any) {
+export default function Approve(props: any) {
 	const [userData, setUserData] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
 

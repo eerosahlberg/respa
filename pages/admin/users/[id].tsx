@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import AllEvents from '../../../components/allEventsTable';
 import { db } from '../../../firebase/conf';
 
-export default function user() {
+export default function User() {
 	const router = useRouter();
 	const { id }: any = router.query;
 
