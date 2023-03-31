@@ -4,38 +4,59 @@ import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/conf';
+import Unauthorized from './unauthorized';
+import NotLoggedIn from './notLoggedIn';
 
-const RedirectUnauthorized = ({ router, children, props }: { router: any; children: any; props: any }) => {
+const RedirectUnauthorized = ({ router, children }: { router: any; children: any }) => {
 	const isBrowser = typeof window !== 'undefined';
 	const toast = useToast();
 
 	const [user, setUser] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
+	const [isAdmin, setIsAdmin] = useState(false);
+	const [protectedRoute, setProtectedRoute] = useState(true);
+	const [loggedIn, setLoggedIn] = useState(false);
 
 	const auth = getAuth();
+
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
+			setLoggedIn(true);
 			setUser(user);
-			getAdminUsers().then((adminUsers) => {
+			setLoading(false);
+			/* getAdminUsers().then((adminUsers) => {
 				if (adminUsers.includes(user.uid)) {
-					console.log('admin');
 					setLoading(false);
+					setUserAdmin(true);
 				} else {
-					console.log('not admin');
-					if (router.pathname.startsWith('/admin')) {
-						redirectToHome();
-					} else {
-						setLoading(false);
-					}
+					setLoading(false);
 				}
-			});
+			}); */
 		} else {
-			if (isBrowser && router.pathname !== '/login') {
-				setLoading(false);
-				redirectToLogin();
-			}
+			setLoggedIn(false);
+			setLoading(false);
 		}
 	});
+
+	useEffect(() => {
+		if (user) {
+			getAuth()
+				.currentUser?.getIdTokenResult()
+				.then((idTokenResult) => {
+					if (idTokenResult.claims.admin) {
+						setIsAdmin(true);
+					}
+				});
+		}
+	}, [user]);
+
+	useEffect(() => {
+		if (router.pathname.startsWith('/admin')) {
+			setProtectedRoute(true);
+		} else {
+			setProtectedRoute(false);
+		}
+	}, []);
 
 	async function getAdminUsers() {
 		const q = query(collection(db, 'users'), where('role', '==', 'admin'));
@@ -47,30 +68,26 @@ const RedirectUnauthorized = ({ router, children, props }: { router: any; childr
 		return adminUsers;
 	}
 
-	function redirectToLogin() {
-		router.push({
-			pathname: '/login',
-			query: { redirect: router.pathname },
-		});
-		setLoading(false);
-	}
-
-	function redirectToHome() {
-		setLoading(false);
-		return <>Ei käyttöoikeuksia</>;
-	}
-	function unAuthToast() {
-		toast({
-			title: 'Ei käyttöoikeuksia',
-			description: 'Sinulla ei ole käyttöoikeuksia tälle sivulle',
-			status: 'error',
-			duration: 5000,
-			isClosable: true,
-		});
-	}
+	console.log(children.props);
 
 	if (!loading) {
-		return <>{children}</>;
+		if (!loggedIn && router.pathname !== '/login') {
+			return (
+				<>
+					<NotLoggedIn />
+				</>
+			);
+		} else if (!loggedIn && router.pathname === '/login') {
+			return <>{children}</>;
+		} else if (!isAdmin && protectedRoute) {
+			return (
+				<>
+					<Unauthorized />
+				</>
+			);
+		} else {
+			return <>{children}</>;
+		}
 	} else {
 		return <>Ladataan...</>;
 	}

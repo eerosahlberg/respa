@@ -1,12 +1,14 @@
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Heading, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
-export default function Login(props: any) {
+export default function NotLoggedIn() {
 	const router = useRouter();
-	const redirect: any = router?.query?.redirect;
 
-	if (props?.user) {
-		router.push(redirect || '/');
+	function signIn() {
+		router.push({
+			pathname: '/login',
+			query: { redirect: router.pathname },
+		});
 	}
 
 	return (
@@ -17,7 +19,7 @@ export default function Login(props: any) {
 			<Heading as='h2' size='md' marginTop='1rem' marginBottom='1rem'>
 				Kirjaudu sisään käyttääksesi palvelua.
 			</Heading>
-			<Button onClick={props.signIn}>Kirjaudu sisään</Button>
+			<Button onClick={signIn}>Siirry sisäänkirjautumiseen</Button>
 		</>
 	);
 }

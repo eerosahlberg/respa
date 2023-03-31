@@ -13,6 +13,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 
+import Layout from '../components/Layout';
+
 const signIn = () => {
 	auth.signInWithPopup(provider)
 		.then(async (result) => {
@@ -46,10 +48,12 @@ export default function App({ Component, pageProps }: AppProps) {
 	}, []);
 
 	return (
-		<RedirectUnauthorized router={useRouter()} props={{ user }}>
-			<ChakraProvider>
-				<Component {...pageProps} user={user} signIn={signIn} signOut={signOut} />
-			</ChakraProvider>
-		</RedirectUnauthorized>
+		<ChakraProvider>
+			<Layout user={user} signIn={signIn} signOut={signOut}>
+				<RedirectUnauthorized router={useRouter()}>
+					<Component {...pageProps} user={user} signIn={signIn} signOut={signOut} />
+				</RedirectUnauthorized>
+			</Layout>
+		</ChakraProvider>
 	);
 }

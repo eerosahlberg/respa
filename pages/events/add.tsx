@@ -128,6 +128,7 @@ export default function AddEvent(props: any) {
 			isClosable: true,
 		});
 		setEventData({});
+		setType('');
 	};
 
 	return (
@@ -179,7 +180,7 @@ export default function AddEvent(props: any) {
 					) : type === 'kisa' ? (
 						<>
 							<Heading size='md'>Kisan ajankohta:</Heading>
-							<Input name='kisa_aika' type='date' onChange={handleChange} />
+							<Input name='kisa_aika' type='text' onChange={handleChange} />
 							<Heading size='md'>Kisan nimi:</Heading>
 							<Input name='kisa_nimi' type='text' onChange={handleChange} />
 							<Heading size='md'>Kisapaikka:</Heading>
@@ -207,7 +208,7 @@ export default function AddEvent(props: any) {
 							<Heading size='md'>Merkki:</Heading>
 							<Input name='ansiomerkki_merkki' type='text' onChange={handleChange} />
 							<Heading size='md'>Myönnetty pvm:</Heading>
-							<Input name='ansiomerkki_aika' type='date' onChange={handleChange} />
+							<Input name='ansiomerkki_aika' type='text' onChange={handleChange} />
 						</>
 					) : type === 'kurssi' ? (
 						<>
