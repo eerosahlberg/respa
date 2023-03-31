@@ -1,5 +1,4 @@
 import { Container } from '@chakra-ui/react';
-import { Head } from 'next/document';
 import Header from './Header';
 
 export default function Layout(props: any) {
